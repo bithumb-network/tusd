@@ -2,6 +2,7 @@ package uid
 
 import (
 	"crypto/rand"
+	"crypto/sha1"
 	"encoding/hex"
 	"io"
 )
@@ -20,4 +21,11 @@ func Uid() string {
 		panic(err)
 	}
 	return hex.EncodeToString(id)
+}
+
+func Uid2(name string) string {
+	h := sha1.New()
+	io.WriteString(h, name)
+	bs := h.Sum(nil)
+	return hex.EncodeToString(bs)
 }

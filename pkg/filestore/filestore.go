@@ -12,13 +12,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/tus/tusd/internal/uid"
+	"github.com/tus/tusd/pkg/handler"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-
-	"github.com/tus/tusd/internal/uid"
-	"github.com/tus/tusd/pkg/handler"
 )
 
 var defaultFilePerm = os.FileMode(0664)
@@ -49,7 +48,12 @@ func (store FileStore) UseIn(composer *handler.StoreComposer) {
 }
 
 func (store FileStore) NewUpload(ctx context.Context, info handler.FileInfo) (handler.Upload, error) {
-	id := uid.Uid()
+	fileName := info.MetaData["fileiden"]
+	if fileName != "" {
+		fmt.Printf("filename: %s \n", fileName)
+	}
+	//id := uid.Uid()
+	id := uid.Uid2(fileName)
 	binPath := store.binPath(id)
 	info.ID = id
 	info.Storage = map[string]string{

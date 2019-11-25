@@ -186,7 +186,12 @@ func (store S3Store) NewUpload(ctx context.Context, info handler.FileInfo) (hand
 
 	var uploadId string
 	if info.ID == "" {
-		uploadId = uid.Uid()
+		fileName := info.MetaData["fileiden"]
+		if fileName != "" {
+			fmt.Printf("filename: %s \n", fileName)
+		}
+		//uploadId = uid.Uid()
+		uploadId = uid.Uid2(fileName)
 	} else {
 		// certain tests set info.ID in advance
 		uploadId = info.ID

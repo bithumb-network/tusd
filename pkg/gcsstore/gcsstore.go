@@ -58,7 +58,12 @@ func (store GCSStore) UseIn(composer *handler.StoreComposer) {
 
 func (store GCSStore) NewUpload(ctx context.Context, info handler.FileInfo) (handler.Upload, error) {
 	if info.ID == "" {
-		info.ID = uid.Uid()
+		fileName := info.MetaData["fileiden"]
+		if fileName != "" {
+			fmt.Printf("filename: %s \n", fileName)
+		}
+		//info.ID = uid.Uid()
+		info.ID = uid.Uid2(fileName)
 	}
 
 	info.Storage = map[string]string{
