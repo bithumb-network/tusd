@@ -528,8 +528,9 @@ func (handler *UnroutedHandler) PatchFile(w http.ResponseWriter, r *http.Request
 	}
 
 	if offset != info.Offset {
-		handler.sendError(w, r, ErrMismatchOffset)
-		return
+		info.Offset = 0
+		//handler.sendError(w, r, ErrMismatchOffset)
+		//return
 	}
 
 	// Do not proxy the call to the data store if the upload is already completed
